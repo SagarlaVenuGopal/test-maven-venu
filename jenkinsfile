@@ -1,32 +1,43 @@
-pipeline {
-    agent any
-
-    tools {
-        maven 'Maven_3.9.7'   // configure this under Jenkins → Global Tool Configuration
-        jdk 'JDK21'      // configure this under Jenkins → Global Tool Configuration
-    }
-
-    stages {
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/SagarlaVenuGopal/test-maven-venu.git'
-            }
-        }
-
-        stage('Build') {
-            steps {
-                sh 'mvn clean package'
-            }
-        }
-
-        stage('Deploy to Tomcat') {
-            steps {
-                deploy adapters: [tomcat9(credentialsId: 'tomcat-creds', path: '', url: 'http://13.60.246.141:8080')],
-                       contextPath: 'myapp',
-                       war: 'target/*.war'
-            }
-        }
-    }
+pipeline{
+agent any
+stages 
+{
+stage('Build') 
+{
+steps{
+echo "Building the Code.........."
+ sh "mvn -version"
+ sh "mvn clean"
 }
-
-
+}
+stage('Test') 
+{
+steps{
+echo "Testing the Code.........."
+sh "mvn test"
+}
+}
+stage('Compile') 
+{
+steps{
+echo "Compiling the Project.........."
+sh "mvn compile"
+}
+}
+stage('package') 
+{
+steps{
+echo "Compiling the Project.........."
+sh "mvn package"
+}
+}
+stage('Deploy') 
+{
+steps{
+echo "Deploying the Project.........."
+/* sh "cp /var/lib/jenkins/workspace/maven-pipeline-1/target/*.war /opt/tomcat/webapps/" */
+ansiblePlaybook credentialsId: 'edf29c56-6626-4ce1-a40e-4d6a98e6afea', disableHostKeyChecking: true, installation: 'ansible', inventory: 'dev.inv', playbook: 'play.yml', sudoUser: null
+}
+}
+}
+}
