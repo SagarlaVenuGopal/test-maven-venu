@@ -1,30 +1,32 @@
 pipeline {
     agent any
-     
-    options {
-        timeout(time: 1, unit: 'MINUTES') // safer than SECONDS
+
+    tools {
+        maven 'Maven_3.9.7'   // configure this under Jenkins → Global Tool Configuration
+        jdk 'JDK21'      // configure this under Jenkins → Global Tool Configuration
     }
+
     stages {
-        stage('Stage 1') {
+        stage('Checkout') {
             steps {
-                echo 'Hello World from Stage 1'
+                git 'https://github.com/SagarlaVenuGopal/test-maven-venu.git'
             }
         }
-        stage('Stage 2') {
+
+        stage('Build') {
             steps {
-                echo 'Hello World from Stage 2'
+                sh 'mvn clean package'
             }
         }
-        stage('Stage 3') {
+
+        stage('Deploy to Tomcat') {
             steps {
-                echo 'Hello World from Stage 3'
-            }
-        }
-        stage('Stage 4') {
-            steps {
-                echo 'Hello World from Stage 4'
+                deploy adapters: [tomcat9(credentialsId: 'tomcat-creds', path: '', url: 'http://13.60.246.141:8080')],
+                       contextPath: 'myapp',
+                       war: 'target/*.war'
             }
         }
     }
 }
+
 
