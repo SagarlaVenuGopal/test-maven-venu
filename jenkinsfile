@@ -1,8 +1,6 @@
 pipeline {
     agent any
-     tools {
-        maven 'Maven_3.9.7'  // EXACT name from Jenkins Global Tool Configuration
-    }
+     
     options {
         timeout(time: 1, unit: 'MINUTES') // safer than SECONDS
     }
