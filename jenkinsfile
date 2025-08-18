@@ -1,23 +1,32 @@
 pipeline {
     agent any
-    tools {
-        maven 'Maven_3.9'  // EXACT name from Jenkins Global Tool Configuration
+     tools {
+        maven 'Maven_3.9.7'  // EXACT name from Jenkins Global Tool Configuration
+    }
+    options {
+        timeout(time: 1, unit: 'MINUTES') // safer than SECONDS
     }
     stages {
-        stage('SCM') {
+        stage('Stage 1') {
             steps {
-                git 'https://github.com/SagarlaVenuGopal/test-maven-venu.git'
+                echo 'Hello World from Stage 1'
             }
         }
-        stage('version') {
+        stage('Stage 2') {
             steps {
-                bat 'mvn --version'
+                echo 'Hello World from Stage 2'
             }
         }
-        stage('install') {
+        stage('Stage 3') {
             steps {
-                bat 'mvn install'
+                echo 'Hello World from Stage 3'
+            }
+        }
+        stage('Stage 4') {
+            steps {
+                echo 'Hello World from Stage 4'
             }
         }
     }
 }
+
