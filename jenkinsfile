@@ -1,7 +1,7 @@
 pipeline {
     agent any
     tools {
-        maven 'Maven_3.9.7'  // EXACT name from Jenkins Global Tool Configuration
+        maven 'Maven_3.8.7'  // EXACT name from Jenkins Global Tool Configuration
     }
     stages {
         stage('SCM') {
